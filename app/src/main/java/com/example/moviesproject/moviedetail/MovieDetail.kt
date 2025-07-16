@@ -19,37 +19,32 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.moviesproject.Movie
+import com.example.moviesproject.UiState
 import com.example.moviesproject.movielist.MoviePoster
 import com.example.moviesproject.movielist.MovieRating
 import com.example.moviesproject.movielist.MovieReleaseDate
 import com.example.moviesproject.theme.MoviesProjectTheme
-import com.example.moviesproject.Movie
 
 @Composable
 fun MovieDetailScreen(viewModel: MovieDetailViewModel = hiltViewModel()) {
     val uiState by viewModel.uiState.collectAsState()
 
-//    when {
-//        uiState.isLoading -> {
-//
-//        }
-//        uiState.errorMessage != null -> {
-//
-//        }
-//        else -> {
-//            uiState.movie?. let { movie ->
-//                MovieDetailContent(movie)
-//            }
-//        }
-//    }
+    when (uiState) {
+        is UiState.Loading -> {}
+        is UiState.Success -> {
+            MovieDetailContent((uiState as UiState.Success<Movie>).data)
+        }
+
+        is UiState.Error -> {}
+    }
 }
 
 @Composable
 fun MovieDetailContent(movie: Movie, modifier: Modifier = Modifier) {
     Column {
         Column(
-            modifier = modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
+            modifier = modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally
         ) {
             MoviePoster(movie.posterPath, 180.dp, 270.dp)
         }
@@ -70,16 +65,14 @@ fun MovieDetailContent(movie: Movie, modifier: Modifier = Modifier) {
 @Composable
 fun AdditionalDetail(oriLanguange: String, modifier: Modifier = Modifier) {
     Text(
-        text = "Language: $oriLanguange",
-        modifier = modifier.padding(top = 8.dp)
+        text = "Language: $oriLanguange", modifier = modifier.padding(top = 8.dp)
     )
 }
 
 @Composable
 fun OverviewMovie(overview: String) {
     Text(
-        text = overview,
-        textAlign = TextAlign.Justify
+        text = overview, textAlign = TextAlign.Justify
     )
 }
 
@@ -91,8 +84,7 @@ fun MovieTitleDetail(title: String, modifier: Modifier = Modifier) {
         fontWeight = FontWeight.Bold,
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,
-        modifier = modifier
-            .padding(top = 16.dp, bottom = 8.dp)
+        modifier = modifier.padding(top = 16.dp, bottom = 8.dp)
     )
 }
 

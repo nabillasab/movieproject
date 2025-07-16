@@ -8,5 +8,5 @@ interface MovieRepository {
 
     fun getMovieList(): Flow<Result<List<Movie>>>
 
-    fun getMovieDetail(movieId: Int): Flow<Movie>
+    fun getMovieDetail(movieId: String): Flow<Result<Movie>>
 }

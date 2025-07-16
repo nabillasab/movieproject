@@ -1,11 +1,9 @@
 package com.example.moviesproject.data
 
 import com.example.moviesproject.Movie
-import com.example.moviesproject.data.mock.MockData
 import com.example.moviesproject.data.network.NetworkDataSource
 import com.example.moviesproject.di.IoDispatcher
 import com.example.moviesproject.domain.MovieRepository
-import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -31,24 +29,17 @@ class MovieRepositoryImpl @Inject constructor(
         }.flowOn(dispatcher)
     }
 
-    override fun getMovieDetail(movieId: Int): Flow<Movie> {
+    override fun getMovieDetail(movieId: String): Flow<Result<Movie>> {
         return flow {
-            getData().forEach { movie ->
-                if (movie.id == movieId) {
-                    emit(movie)
-                    return@forEach
-                }
+            emit(Result.Loading)
+            try {
+                val response = networkDataSource.getMovieDetail(movieId.toString())
+                emit(Result.Success(movieDetailMapper(response)))
+            } catch (exception: Exception) {
+                emit(Result.Error(exception.message ?: "unexpected error"))
             }
-        }
+        }.flowOn(dispatcher)
     }
-}
-
-//TODO changes this with API
-private fun getData(): List<Movie> {
-    val gson = Gson()
-    val movieResponse: MovieResponse =
-        gson.fromJson(MockData.getMovieList(), MovieResponse::class.java)
-    return movieMapper(movieResponse.results)
 }
 
 private fun movieMapper(movieDataList: List<MovieData>): List<Movie> {
@@ -68,3 +59,25 @@ private fun movieMapper(movieDataList: List<MovieData>): List<Movie> {
     }
     return movieList
 }
+
+private fun movieDetailMapper(movieData: MovieData): Movie {
+    return Movie(
+        id = movieData.id,
+        title = movieData.title,
+        originalLanguage = movieData.originalLanguage,
+        overview = movieData.overview,
+        posterPath = movieData.posterPath,
+        releaseDate = movieData.releaseDate,
+        voteAverage = movieData.voteAverage,
+        voteCount = movieData.voteCount
+    )
+}
+
+/*
+private fun getData(): List<Movie> {
+    val gson = Gson()
+    val movieResponse: MovieResponse =
+        gson.fromJson(MockData.getMovieList(), MovieResponse::class.java)
+    return movieMapper(movieResponse.results)
+}
+ */
