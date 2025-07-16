@@ -22,7 +22,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.moviesproject.movielist.MoviePoster
 import com.example.moviesproject.movielist.MovieRating
 import com.example.moviesproject.movielist.MovieReleaseDate
-import com.example.moviesproject.util.theme.MoviesProjectTheme
+import com.example.moviesproject.theme.MoviesProjectTheme
 import com.example.moviesproject.data.Movie
 
 @Composable

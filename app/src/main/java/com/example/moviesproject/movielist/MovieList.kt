@@ -40,7 +40,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.moviesproject.R
-import com.example.moviesproject.util.theme.MoviesProjectTheme
+import com.example.moviesproject.theme.MoviesProjectTheme
 import com.example.moviesproject.data.Movie
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter

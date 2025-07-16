@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.moviesproject.util.theme.MoviesProjectTheme
+import com.example.moviesproject.theme.MoviesProjectTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
