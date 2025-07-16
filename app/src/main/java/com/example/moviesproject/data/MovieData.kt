@@ -6,7 +6,11 @@ data class MovieResponse(
     @SerializedName("page")
     val page: Int = 0,
     @SerializedName("results")
-    val results: List<MovieData> = arrayListOf()
+    val results: List<MovieData> = arrayListOf(),
+    @SerializedName("total_pages")
+    val totalPages: Int,
+    @SerializedName("total_results")
+    val totalResults: Int
 )
 
 data class MovieData(
@@ -28,12 +32,8 @@ data class MovieData(
     val voteCount: Int = 0,
 )
 
-data class Movie(
-    val id: Int,
-    val title: String,
-    val originalLanguage: String,
-    val overview: String,
-    val posterPath: String,
-    val releaseDate: String,
-    val voteAverage: Double,
-    val voteCount: Int)
+sealed class Result<out T> {
+    object Loading : Result<Nothing>()
+    data class Success<T>(val data: T) : Result<T>()
+    data class Error(val message: String) : Result<Nothing>()
+}

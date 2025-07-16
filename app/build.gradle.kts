@@ -67,4 +67,9 @@ dependencies {
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
+
+    // Retrofit
+    implementation(libs.retrofit2)
+    implementation(libs.retrofit2.gson)
+    implementation(libs.okhttp.logging)
 }

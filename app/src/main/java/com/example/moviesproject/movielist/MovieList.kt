@@ -39,31 +39,28 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.example.moviesproject.Movie
 import com.example.moviesproject.R
+import com.example.moviesproject.UiState
 import com.example.moviesproject.theme.MoviesProjectTheme
-import com.example.moviesproject.data.Movie
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 @Composable
-fun MovieListScreen(onMovieClick: (Int) -> Unit,
-                    viewModel: MovieListViewModel = hiltViewModel()
+fun MovieListScreen(
+    onMovieClick: (Int) -> Unit,
+    viewModel: MovieListViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
-    when {
-        uiState.isLoading -> {
-
+    when (uiState) {
+        is UiState.Loading -> {}
+        is UiState.Success -> {
+            MovieListContent((uiState as UiState.Success<List<Movie>>).data, onMovieClick)
         }
 
-        uiState.errorMessage != null -> {
-
-        }
-
-        else -> {
-            MovieListContent(uiState.movieList, onMovieClick)
-        }
+        is UiState.Error -> {}
     }
 }
 
@@ -118,7 +115,7 @@ fun MoviePoster(posterPath: String, width: Dp, height: Dp, modifier: Modifier = 
             .error(R.drawable.img_error)
             .crossfade(true)
             .listener(onError = { requset, throwable ->
-                Log.e("MOVIE", "MoviePoster: ${requset}, ${throwable}", )
+                Log.e("MOVIE", "MoviePoster: ${requset}, ${throwable}")
             })
             .build(),
         contentDescription = null,

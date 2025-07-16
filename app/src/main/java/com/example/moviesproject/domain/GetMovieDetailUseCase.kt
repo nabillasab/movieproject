@@ -1,6 +1,6 @@
 package com.example.moviesproject.domain
 
-import com.example.moviesproject.data.Movie
+import com.example.moviesproject.Movie
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

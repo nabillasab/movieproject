@@ -23,25 +23,25 @@ import com.example.moviesproject.movielist.MoviePoster
 import com.example.moviesproject.movielist.MovieRating
 import com.example.moviesproject.movielist.MovieReleaseDate
 import com.example.moviesproject.theme.MoviesProjectTheme
-import com.example.moviesproject.data.Movie
+import com.example.moviesproject.Movie
 
 @Composable
 fun MovieDetailScreen(viewModel: MovieDetailViewModel = hiltViewModel()) {
     val uiState by viewModel.uiState.collectAsState()
 
-    when {
-        uiState.isLoading -> {
-
-        }
-        uiState.errorMessage != null -> {
-
-        }
-        else -> {
-            uiState.movie?. let { movie ->
-                MovieDetailContent(movie)
-            }
-        }
-    }
+//    when {
+//        uiState.isLoading -> {
+//
+//        }
+//        uiState.errorMessage != null -> {
+//
+//        }
+//        else -> {
+//            uiState.movie?. let { movie ->
+//                MovieDetailContent(movie)
+//            }
+//        }
+//    }
 }
 
 @Composable
