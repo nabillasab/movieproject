@@ -1,4 +1,4 @@
-package com.example.moviesproject.ui
+package com.example.moviesproject
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.example.moviesproject.ui.theme.MoviesProjectTheme
+import com.example.moviesproject.util.theme.MoviesProjectTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

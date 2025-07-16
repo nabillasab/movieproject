@@ -1,9 +1,10 @@
 package com.example.moviesproject.domain
 
-import com.example.moviesproject.ui.tmdb.Movie
+import com.example.moviesproject.data.Movie
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class GetMovieDetailUseCase(
+class GetMovieDetailUseCase @Inject constructor(
     private val repository: MovieRepository
 ) {
 

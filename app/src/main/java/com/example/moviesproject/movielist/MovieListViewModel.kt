@@ -1,16 +1,25 @@
-package com.example.moviesproject.ui.tmdb
+package com.example.moviesproject.movielist
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.example.moviesproject.data.Movie
 import com.example.moviesproject.domain.GetMovieListUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MovieListViewModel(
+data class MovieListUiState(
+    val isLoading: Boolean = false,
+    val movieList: List<Movie> = emptyList(),
+    val errorMessage: String? = null
+)
+
+@HiltViewModel
+class MovieListViewModel @Inject constructor(
     private val movieListUseCase: GetMovieListUseCase
 ) : ViewModel() {
 
@@ -44,19 +53,5 @@ class MovieListViewModel(
                     }
                 }
         }
-    }
-
-    companion object {
-        fun provideFactory(movieListUseCase: GetMovieListUseCase): ViewModelProvider.Factory =
-            object : ViewModelProvider.Factory {
-
-                @Suppress("UNCHECKED_CAST")
-                override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                    if (modelClass.isAssignableFrom(MovieListViewModel::class.java)) {
-                        return MovieListViewModel(movieListUseCase) as T
-                    }
-                    throw IllegalArgumentException("Unknown ViewModel class")
-                }
-            }
     }
 }

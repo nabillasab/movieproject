@@ -1,4 +1,4 @@
-package com.example.moviesproject.data
+package com.example.moviesproject.data.mock
 
 object MockData {
     fun getMovieList(): String {

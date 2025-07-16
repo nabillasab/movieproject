@@ -1,21 +1,32 @@
-package com.example.moviesproject.ui.tmdb
+package com.example.moviesproject.moviedetail
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.example.moviesproject.data.Movie
 import com.example.moviesproject.domain.GetMovieDetailUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MovieDetailViewModel(
-    private val movieId: String,
-    private val movieDetailUseCase: GetMovieDetailUseCase
+data class MovieDetailUiState(
+    val isLoading: Boolean = false,
+    val movie: Movie? = null,
+    val errorMessage: String? = null
+)
+
+@HiltViewModel
+class MovieDetailViewModel @Inject constructor(
+    private val movieDetailUseCase: GetMovieDetailUseCase,
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
+    val movieId: String = savedStateHandle["movieId"] ?: ""
     private val _uiState = MutableStateFlow(MovieDetailUiState())
     val uiState = _uiState.asStateFlow()
 
@@ -25,7 +36,7 @@ class MovieDetailViewModel(
 
     private fun loadMovieDetail() {
         _uiState.update { _uiState.value.copy(isLoading = true) }
-
+        Log.e("MovieVM", "after movieId = ${movieId}")
         viewModelScope.launch {
             movieDetailUseCase.execute(movieId)
                 .catch { exception ->
@@ -45,22 +56,6 @@ class MovieDetailViewModel(
                         )
                     }
                 }
-        }
-    }
-
-    companion object {
-        fun provideFactory(
-            movieId: String,
-            movieDetailUseCase: GetMovieDetailUseCase
-        ): ViewModelProvider.Factory = object : ViewModelProvider.Factory {
-
-            @Suppress("UNCHECKED_CAST")
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                if (modelClass.isAssignableFrom(MovieDetailViewModel::class.java)) {
-                    return MovieDetailViewModel(movieId, movieDetailUseCase) as T
-                }
-                throw IllegalArgumentException("Unknown ViewModel class")
-            }
         }
     }
 }

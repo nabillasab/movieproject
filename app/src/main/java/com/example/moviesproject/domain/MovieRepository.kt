@@ -1,6 +1,6 @@
 package com.example.moviesproject.domain
 
-import com.example.moviesproject.ui.tmdb.Movie
+import com.example.moviesproject.data.Movie
 import kotlinx.coroutines.flow.Flow
 
 interface MovieRepository {

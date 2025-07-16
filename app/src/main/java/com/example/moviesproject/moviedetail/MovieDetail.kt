@@ -1,7 +1,6 @@
-package com.example.moviesproject.ui.tmdb
+package com.example.moviesproject.moviedetail
 
 import android.os.Build
-import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -19,10 +18,15 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.moviesproject.ui.theme.MoviesProjectTheme
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.moviesproject.movielist.MoviePoster
+import com.example.moviesproject.movielist.MovieRating
+import com.example.moviesproject.movielist.MovieReleaseDate
+import com.example.moviesproject.util.theme.MoviesProjectTheme
+import com.example.moviesproject.data.Movie
 
 @Composable
-fun MovieDetailScreen(viewModel: MovieDetailViewModel) {
+fun MovieDetailScreen(viewModel: MovieDetailViewModel = hiltViewModel()) {
     val uiState by viewModel.uiState.collectAsState()
 
     when {

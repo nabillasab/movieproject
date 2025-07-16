@@ -1,12 +1,15 @@
 package com.example.moviesproject.data
 
+import com.example.moviesproject.data.mock.MockData
 import com.example.moviesproject.domain.MovieRepository
-import com.example.moviesproject.ui.tmdb.Movie
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class MovieRepositoryImpl : MovieRepository {
+@Singleton
+class MovieRepositoryImpl @Inject constructor() : MovieRepository {
 
     override fun getMovieList(): Flow<List<Movie>> {
         return flow {

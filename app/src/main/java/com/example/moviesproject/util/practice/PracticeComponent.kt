@@ -1,4 +1,4 @@
-package com.example.moviesproject.ui.practice
+package com.example.moviesproject.util.practice
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

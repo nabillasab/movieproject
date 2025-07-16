@@ -1,7 +1,8 @@
-package com.example.moviesproject.ui.tmdb
+package com.example.moviesproject.movielist
 
 import android.annotation.SuppressLint
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -35,16 +36,20 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.moviesproject.R
-import com.example.moviesproject.ui.theme.MoviesProjectTheme
+import com.example.moviesproject.util.theme.MoviesProjectTheme
+import com.example.moviesproject.data.Movie
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 @Composable
-fun MovieListScreen(viewModel: MovieListViewModel, onMovieClick: (Int) -> Unit) {
+fun MovieListScreen(onMovieClick: (Int) -> Unit,
+                    viewModel: MovieListViewModel = hiltViewModel()
+) {
     val uiState by viewModel.uiState.collectAsState()
 
     when {
@@ -112,6 +117,9 @@ fun MoviePoster(posterPath: String, width: Dp, height: Dp, modifier: Modifier = 
             .placeholder(R.drawable.img_loading)
             .error(R.drawable.img_error)
             .crossfade(true)
+            .listener(onError = { requset, throwable ->
+                Log.e("MOVIE", "MoviePoster: ${requset}, ${throwable}", )
+            })
             .build(),
         contentDescription = null,
         contentScale = ContentScale.Crop,
