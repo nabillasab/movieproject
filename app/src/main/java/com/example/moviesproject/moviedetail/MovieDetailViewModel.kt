@@ -13,10 +13,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-data class MovieDetailUiState(
-    val isLoading: Boolean = false, val movie: Movie? = null, val errorMessage: String? = null
-)
-
 @HiltViewModel
 class MovieDetailViewModel @Inject constructor(
     private val movieDetailUseCase: GetMovieDetailUseCase, savedStateHandle: SavedStateHandle
