@@ -1,6 +1,10 @@
 package com.example.moviesproject.di
 
+import android.content.Context
+import androidx.room.Room
 import com.example.moviesproject.data.MovieRepositoryImpl
+import com.example.moviesproject.data.local.MovieDao
+import com.example.moviesproject.data.local.MovieDatabase
 import com.example.moviesproject.data.network.MovieNetworkDataSource
 import com.example.moviesproject.data.network.MovieTmdbApi
 import com.example.moviesproject.data.network.NetworkDataSource
@@ -12,6 +16,7 @@ import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -62,6 +67,7 @@ object NetworkModules {
             .build()
     }
 
+    @Singleton
     @Provides
     fun provideRetrofit(gson: Gson, okHttpClient: OkHttpClient): Retrofit {
         return Retrofit.Builder()
@@ -77,3 +83,20 @@ object NetworkModules {
     }
 }
 
+@Module
+@InstallIn(SingletonComponent::class)
+object DatabaseModules {
+
+    @Singleton
+    @Provides
+    fun provideDatabase(@ApplicationContext context: Context): MovieDatabase {
+        return Room.databaseBuilder(
+            context, MovieDatabase::class.java, "movie_db"
+        ).build()
+    }
+
+    @Provides
+    fun provideMovieDao(database: MovieDatabase): MovieDao {
+        return database.movieDao()
+    }
+}

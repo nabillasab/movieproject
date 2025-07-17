@@ -72,4 +72,9 @@ dependencies {
     implementation(libs.retrofit2)
     implementation(libs.retrofit2.gson)
     implementation(libs.okhttp.logging)
+
+    // Room
+    implementation(libs.room.runtime)
+    implementation(libs.room.ktx)
+    ksp(libs.room.compiler)
 }
