@@ -2,7 +2,6 @@ package com.example.moviesproject.movielist
 
 import android.annotation.SuppressLint
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -28,8 +27,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -37,15 +34,15 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
 import com.example.moviesproject.Movie
-import com.example.moviesproject.R
 import com.example.moviesproject.UiState
-import com.example.moviesproject.theme.MoviesProjectTheme
+import com.example.moviesproject.util.image.CoilImageLoader
+import com.example.moviesproject.util.image.ComposeImageLoader
+import com.example.moviesproject.util.theme.MoviesProjectTheme
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Locale
+
 
 @Composable
 fun MovieListScreen(
@@ -53,11 +50,13 @@ fun MovieListScreen(
     viewModel: MovieListViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val imageLoader = viewModel.imageLoader
 
     when (uiState) {
         is UiState.Loading -> {}
         is UiState.Success -> {
-            MovieListContent((uiState as UiState.Success<List<Movie>>).data, onMovieClick)
+            MovieListContent((uiState as UiState.Success<List<Movie>>).data,
+                imageLoader, onMovieClick)
         }
 
         is UiState.Error -> {}
@@ -66,7 +65,7 @@ fun MovieListScreen(
 
 @Composable
 private fun MovieListContent(
-    movieList: List<Movie>, onMovieClick: (Int) -> Unit
+    movieList: List<Movie>, imageLoader: ComposeImageLoader, onMovieClick: (Int) -> Unit
 ) {
     LazyColumn {
         items(movieList) { movie ->
@@ -75,7 +74,7 @@ private fun MovieListContent(
                     .fillMaxWidth()
                     .clickable { onMovieClick(movie.id) }
             ) {
-                MovieItem(movie)
+                MovieItem(movie, imageLoader)
                 ItemListDivider()
             }
         }
@@ -91,9 +90,9 @@ private fun ItemListDivider() {
 }
 
 @Composable
-fun MovieItem(movie: Movie, modifier: Modifier = Modifier) {
+fun MovieItem(movie: Movie, imageLoader: ComposeImageLoader, modifier: Modifier = Modifier) {
     Row(modifier = modifier.fillMaxWidth()) {
-        MoviePoster(movie.posterPath, 60.dp, 90.dp, modifier = modifier.padding(16.dp))
+        MoviePoster(movie.posterPath, 60.dp, 90.dp, imageLoader, modifier = modifier.padding(16.dp))
         Column(modifier = modifier.fillMaxWidth(), verticalArrangement = Arrangement.Center) {
             MovieTitle(movie.title)
             MovieRating(movie.voteAverage, movie.voteCount)
@@ -106,24 +105,16 @@ fun MovieItem(movie: Movie, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun MoviePoster(posterPath: String, width: Dp, height: Dp, modifier: Modifier = Modifier) {
+fun MoviePoster(
+    posterPath: String,
+    width: Dp,
+    height: Dp,
+    imageLoader: ComposeImageLoader,
+    modifier: Modifier = Modifier
+) {
     val imgUrl = "https://image.tmdb.org/t/p/w500$posterPath"
-    AsyncImage(
-        model = ImageRequest.Builder(LocalContext.current)
-            .data(imgUrl)
-            .placeholder(R.drawable.img_loading)
-            .error(R.drawable.img_error)
-            .crossfade(true)
-            .listener(onError = { requset, throwable ->
-                Log.e("MOVIE", "MoviePoster: ${requset}, ${throwable}")
-            })
-            .build(),
-        contentDescription = null,
-        contentScale = ContentScale.Crop,
-        modifier = modifier
-            .width(width)
-            .height(height)
-    )
+    val modifier = modifier.width(width).height(height)
+    imageLoader.LoadImage(imgUrl, modifier)
 }
 
 @Composable
@@ -196,6 +187,6 @@ fun MoviesPreview() {
         )
         movieList.add(movie)
         movieList.add(movie)
-        MovieListContent(movieList, onMovieClick = {})
+        MovieListContent(movieList, CoilImageLoader(), onMovieClick = {})
     }
 }

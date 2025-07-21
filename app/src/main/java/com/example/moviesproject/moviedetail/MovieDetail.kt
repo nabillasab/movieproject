@@ -24,16 +24,19 @@ import com.example.moviesproject.UiState
 import com.example.moviesproject.movielist.MoviePoster
 import com.example.moviesproject.movielist.MovieRating
 import com.example.moviesproject.movielist.MovieReleaseDate
-import com.example.moviesproject.theme.MoviesProjectTheme
+import com.example.moviesproject.util.image.CoilImageLoader
+import com.example.moviesproject.util.image.ComposeImageLoader
+import com.example.moviesproject.util.theme.MoviesProjectTheme
 
 @Composable
 fun MovieDetailScreen(viewModel: MovieDetailViewModel = hiltViewModel()) {
     val uiState by viewModel.uiState.collectAsState()
+    val imageLoader = viewModel.imageLoader
 
     when (uiState) {
         is UiState.Loading -> {}
         is UiState.Success -> {
-            MovieDetailContent((uiState as UiState.Success<Movie>).data)
+            MovieDetailContent((uiState as UiState.Success<Movie>).data, imageLoader)
         }
 
         is UiState.Error -> {}
@@ -41,12 +44,12 @@ fun MovieDetailScreen(viewModel: MovieDetailViewModel = hiltViewModel()) {
 }
 
 @Composable
-fun MovieDetailContent(movie: Movie, modifier: Modifier = Modifier) {
+fun MovieDetailContent(movie: Movie, imageLoader: ComposeImageLoader, modifier: Modifier = Modifier) {
     Column {
         Column(
             modifier = modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            MoviePoster(movie.posterPath, 180.dp, 270.dp)
+            MoviePoster(movie.posterPath, 180.dp, 270.dp, imageLoader)
         }
         MovieTitleDetail(movie.title)
         Row {
@@ -102,6 +105,6 @@ fun MoviesDetailPreview() {
             7.417,
             2006
         )
-        MovieDetailContent(movie)
+        MovieDetailContent(movie, CoilImageLoader())
     }
 }

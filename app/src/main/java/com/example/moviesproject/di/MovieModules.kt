@@ -10,6 +10,9 @@ import com.example.moviesproject.data.network.MovieTmdbApi
 import com.example.moviesproject.data.network.NetworkDataSource
 import com.example.moviesproject.data.network.NetworkExceptionInterceptor
 import com.example.moviesproject.domain.MovieRepository
+import com.example.moviesproject.util.image.CoilImageLoader
+import com.example.moviesproject.util.image.ComposeImageLoader
+import com.example.moviesproject.util.image.GlideImageLoader
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Binds
@@ -22,6 +25,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Named
 import javax.inject.Singleton
 
 @Module
@@ -36,6 +40,26 @@ abstract class MovieModules {
     @Binds
     abstract fun bindNetworkDataSource(networkDataSource: MovieNetworkDataSource): NetworkDataSource
 
+}
+
+@Module
+@InstallIn(SingletonComponent::class)
+object ImageLoaderModules {
+
+    @Provides
+    @Singleton
+    @Named("coil")
+    fun provideCoilImageLoader(coilImageLoader: CoilImageLoader): ComposeImageLoader =
+        CoilImageLoader()
+
+    @Provides
+    @Singleton
+    @Named("glide")
+    fun provideGlideImageLoader(
+        glideImageLoader: GlideImageLoader,
+        @ApplicationContext context: Context
+    ): ComposeImageLoader =
+        GlideImageLoader(context)
 }
 
 @Module

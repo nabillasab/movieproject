@@ -6,6 +6,8 @@ import com.example.moviesproject.Movie
 import com.example.moviesproject.UiState
 import com.example.moviesproject.data.Result
 import com.example.moviesproject.domain.GetMovieListUseCase
+import com.example.moviesproject.util.image.ComposeImageLoader
+import com.example.moviesproject.util.image.ImageLoaderManager
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -14,7 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MovieListViewModel @Inject constructor(
-    private val movieListUseCase: GetMovieListUseCase
+    private val movieListUseCase: GetMovieListUseCase,
+    private val imageLoaderManager: ImageLoaderManager
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<UiState<List<Movie>>>(UiState.Loading)
@@ -23,6 +26,9 @@ class MovieListViewModel @Inject constructor(
     init {
         loadMovieList()
     }
+
+    val imageLoader: ComposeImageLoader
+        get() = imageLoaderManager.getCurrentImageLoader()
 
     private fun loadMovieList() {
         viewModelScope.launch {

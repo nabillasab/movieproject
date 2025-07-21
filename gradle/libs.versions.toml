@@ -18,6 +18,7 @@ hilt-navigation-compose = "1.2.0"
 retrofit = "2.11.0"
 okhttpLogging = "4.12.0"
 room = "2.6.1"
+glide = "1.0.0-beta01"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -38,6 +39,8 @@ coil-kt-compose = { module = "io.coil-kt:coil-compose", version.ref = "coil" }
 gson = { module = "com.google.code.gson:gson", version.ref = "gsonVersion" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigation" }
 androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "viewModelKtx" }
+
+glide = { module = "com.github.bumptech.glide:compose", version.ref = "glide"}
 
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 hilt-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
