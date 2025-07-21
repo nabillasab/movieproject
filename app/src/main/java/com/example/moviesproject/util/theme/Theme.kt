@@ -1,4 +1,4 @@
-package com.example.moviesproject.theme
+package com.example.moviesproject.util.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
