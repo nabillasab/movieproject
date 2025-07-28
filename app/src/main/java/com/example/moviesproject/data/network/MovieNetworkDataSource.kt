@@ -1,5 +1,6 @@
 package com.example.moviesproject.data.network
 
+import com.example.moviesproject.BuildConfig
 import com.example.moviesproject.data.MovieData
 import com.example.moviesproject.data.MovieResponse
 import javax.inject.Inject
@@ -32,7 +33,6 @@ class MovieNetworkDataSource @Inject constructor(
     }
 
     companion object {
-        private const val TOKEN =
-            "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIzNzY3NWFlZDY3YWZmMDkwYmU2ZjFkNWUyN2IwZmFmMSIsIm5iZiI6MTc0NDgyMjkxNS43Nywic3ViIjoiNjdmZmUyODNkNjQ1ZTQxZTA5OTk3MDNkIiwic2NvcGVzIjpbImFwaV9yZWFkIl0sInZlcnNpb24iOjF9.habmUdNpVkndvVDaUYCVmLUkPEfzrlHCn5cW86Er1eY"
+        private const val TOKEN = BuildConfig.API_KEY
     }
 }
